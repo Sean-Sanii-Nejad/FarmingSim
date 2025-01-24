@@ -14,10 +14,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Animator anim;
 
+    public enum ToolType 
+    {
+        plough,
+        wateringCan,
+        seeds,
+        basket
+    }
+
+    public ToolType currentTool;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         theRB = GetComponent<Rigidbody2D>();
+        UIController.instance.SwitchTool((int) currentTool);
     }
 
     // Update is called once per frame
@@ -35,10 +46,52 @@ public class PlayerController : MonoBehaviour
             transform.localScale = Vector3.one;
         }
 
+        bool hasSwitchedTool = false;
+        if(Keyboard.current.tabKey.wasPressedThisFrame)
+        {
+            currentTool++;
+            if((int) currentTool >= 4)
+            {
+                currentTool = ToolType.plough;
+            }
+
+            hasSwitchedTool = true;
+        }
+
+        if(Keyboard.current.digit1Key.wasPressedThisFrame)
+        {
+            currentTool = ToolType.plough;
+            hasSwitchedTool = true;
+        }
+
+        if(Keyboard.current.digit2Key.wasPressedThisFrame)
+        {
+            currentTool = ToolType.wateringCan;
+            hasSwitchedTool = true;
+        }
+
+        if(Keyboard.current.digit3Key.wasPressedThisFrame)
+        {
+            currentTool = ToolType.seeds;
+            hasSwitchedTool = true;
+        }
+
+        if(Keyboard.current.digit4Key.wasPressedThisFrame)
+        {
+            currentTool = ToolType.basket;
+            hasSwitchedTool = true;
+        }
+
         if(actionInput.action.WasPressedThisFrame())
         {
             UseTool();
         }
+
+        if(hasSwitchedTool)
+        {
+            UIController.instance.SwitchTool((int) currentTool);
+        }
+        hasSwitchedTool = false;
     }
 
     void UseTool()
@@ -46,6 +99,27 @@ public class PlayerController : MonoBehaviour
         GrowBlock block = null;
 
         block = FindFirstObjectByType<GrowBlock>();
-        block.PloughSoil();
+        
+        if(block != null)
+        {
+            switch(currentTool)
+            {
+                case ToolType.plough: 
+                        block.PloughSoil();
+                    break;
+
+                case ToolType.wateringCan: 
+
+                    break;
+
+                case ToolType.seeds: 
+
+                    break;
+
+                case ToolType.basket: 
+
+                    break;
+            }
+        }
     }
 }
