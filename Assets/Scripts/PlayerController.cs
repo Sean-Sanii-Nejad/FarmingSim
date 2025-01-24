@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     private float moveSpeed;
 
     [SerializeField]    
-    private InputActionReference moveInput;
+    private InputActionReference moveInput, actionInput;
 
     [SerializeField]
     private Animator anim;
@@ -34,5 +34,18 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = Vector3.one;
         }
+
+        if(actionInput.action.WasPressedThisFrame())
+        {
+            UseTool();
+        }
+    }
+
+    void UseTool()
+    {
+        GrowBlock block = null;
+
+        block = FindFirstObjectByType<GrowBlock>();
+        block.PloughSoil();
     }
 }
