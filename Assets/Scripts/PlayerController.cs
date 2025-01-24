@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
 
     public ToolType currentTool;
 
+    public float toolWaitTime = .5f;
+    private float toolWaitCounter;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,16 +37,24 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        theRB.linearVelocity = moveInput.action.ReadValue<Vector2>().normalized * moveSpeed;
-        anim.SetFloat("speed", theRB.linearVelocity.magnitude);
 
-        if(theRB.linearVelocity.x < 0f) // Moving Left
+        if(toolWaitCounter > 0)
         {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
+            toolWaitCounter -= Time.deltaTime;
+            theRB.linearVelocity = Vector3.zero;
         }
-        else if(theRB.linearVelocityX > 0f) // Moving Right
+        else
         {
-            transform.localScale = Vector3.one;
+            theRB.linearVelocity = moveInput.action.ReadValue<Vector2>().normalized * moveSpeed;
+            anim.SetFloat("speed", theRB.linearVelocity.magnitude);
+            if(theRB.linearVelocity.x < 0f) // Moving Left
+            {
+                transform.localScale = new Vector3(-1f, 1f, 1f);
+            }
+            else if(theRB.linearVelocityX > 0f) // Moving Right
+            {
+                transform.localScale = Vector3.one;
+            }
         }
 
         bool hasSwitchedTool = false;
@@ -99,25 +110,29 @@ public class PlayerController : MonoBehaviour
         GrowBlock block = null;
 
         block = FindFirstObjectByType<GrowBlock>();
+
+        toolWaitCounter = toolWaitTime;
         
         if(block != null)
         {
             switch(currentTool)
             {
                 case ToolType.plough: 
-                        block.PloughSoil();
+                    block.PloughSoil();
+                    anim.SetTrigger("usePlough");
                     break;
 
                 case ToolType.wateringCan: 
-
+                    block.WaterSoil();
+                    anim.SetTrigger("useWaterCan");
                     break;
 
                 case ToolType.seeds: 
-
+                    block.PlantCrop();
                     break;
 
                 case ToolType.basket: 
-
+                    block.HarvestCrop();
                     break;
             }
         }
