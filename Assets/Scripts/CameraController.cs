@@ -16,6 +16,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         target = FindAnyObjectByType<PlayerController>().transform;   
+        target = PlayerController.instance.transform;
 
         clampMin.SetParent(null);
         clampMax.SetParent(null);
