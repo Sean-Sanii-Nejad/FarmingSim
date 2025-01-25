@@ -1,18 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum GrowthStage
-{
-    barren,
-    ploughed,
-    planted,
-    growing1,
-    growing2,
-    ripe
-}
-
 public class GrowBlock : MonoBehaviour
 {
+    public enum GrowthStage
+    {
+        barren,
+        ploughed,
+        planted,
+        growing1,
+        growing2,
+        ripe
+    }
     public GrowthStage currentStage;
     public SpriteRenderer theSR;
     public Sprite soilTilled, soilWatered;
@@ -23,6 +22,8 @@ public class GrowBlock : MonoBehaviour
     public bool isWatered;
 
     public bool preventUse;
+
+    private Vector2Int gridPosition;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -67,6 +68,7 @@ public class GrowBlock : MonoBehaviour
                 theSR.sprite = soilTilled;
             }
         }
+        UpdateGridInfo();
     }
 
     public void PloughSoil()
@@ -96,7 +98,7 @@ public class GrowBlock : MonoBehaviour
         }
     }
 
-    void UpdateCropSprite()
+    public void UpdateCropSprite()
     {
         switch(currentStage)
         {
@@ -113,6 +115,7 @@ public class GrowBlock : MonoBehaviour
                 cropSR.sprite = cropRipe;
                 break;
         }
+        UpdateGridInfo();
     }
 
     public void AdvanceCrop()
@@ -137,5 +140,15 @@ public class GrowBlock : MonoBehaviour
             SetSoilSprite();
             cropSR.sprite = null;
         }
+    }
+
+    public void SetGridPosition(int x, int y)
+    {
+        gridPosition = new Vector2Int(x, y);
+    }
+
+    void UpdateGridInfo()
+    {
+        GridInfo.instance.UpdateInfo(this, gridPosition.x, gridPosition.y);
     }
 }

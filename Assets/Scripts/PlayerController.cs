@@ -111,29 +111,36 @@ public class PlayerController : MonoBehaviour
             hasSwitchedTool = true;
         }
 
-        if(actionInput.action.WasPressedThisFrame())
+        if(GridController.instance != null)
         {
-            UseTool();
-        }
+            if(actionInput.action.WasPressedThisFrame())
+            {
+                UseTool();
+            }
 
-        if(hasSwitchedTool)
+            if(hasSwitchedTool)
+            {
+                UIController.instance.SwitchTool((int) currentTool);
+            }
+            hasSwitchedTool = false;
+
+            toolIndicator.position = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            toolIndicator.position = new Vector3(toolIndicator.position.x, toolIndicator.position.y, 0f);
+
+            if(Vector3.Distance(toolIndicator.position, transform.position) > toolRange)
+            {
+                Vector2 direction = toolIndicator.position - transform.position;
+                direction = direction.normalized * toolRange;
+                toolIndicator.position = transform.position + new Vector3(direction.x, direction.y, 0f);
+            }
+
+            toolIndicator.position = new Vector3(Mathf.FloorToInt(toolIndicator.position.x)+ .5f,
+                Mathf.FloorToInt(toolIndicator.position.y) + .5f, 0f);
+        }
+        else
         {
-            UIController.instance.SwitchTool((int) currentTool);
-        }
-        hasSwitchedTool = false;
-
-        toolIndicator.position = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        toolIndicator.position = new Vector3(toolIndicator.position.x, toolIndicator.position.y, 0f);
-
-        if(Vector3.Distance(toolIndicator.position, transform.position) > toolRange)
-        {
-            Vector2 direction = toolIndicator.position - transform.position;
-            direction = direction.normalized * toolRange;
-            toolIndicator.position = transform.position + new Vector3(direction.x, direction.y, 0f);
-        }
-
-        toolIndicator.position = new Vector3(Mathf.FloorToInt(toolIndicator.position.x)+ .5f,
-            Mathf.FloorToInt(toolIndicator.position.y) + .5f, 0f);
+            toolIndicator.position = new Vector3(0f, 0f, -20f);
+        } 
     }
 
     void UseTool()
