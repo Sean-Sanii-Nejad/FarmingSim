@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
     public Transform toolIndicator;
     public float toolRange = 3f;
 
+    public CropController.CropType seedCropType;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -55,7 +57,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if(toolWaitCounter > 0)
         {
             toolWaitCounter -= Time.deltaTime;
@@ -146,8 +147,6 @@ public class PlayerController : MonoBehaviour
     void UseTool()
     {
         GrowBlock block = null;
-
-        //block = FindFirstObjectByType<GrowBlock>();
         block = GridController.instance.GetBlock(toolIndicator.position.x - .5f, toolIndicator.position.y -.5f);
 
         toolWaitCounter = toolWaitTime;
@@ -167,7 +166,11 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case ToolType.seeds: 
-                    block.PlantCrop();
+                    if(CropController.instance.GetCropInfo(seedCropType).seedAmount > 0)
+                    {
+                        block.PlantCrop(seedCropType);
+                        CropController.instance.UseSeed(seedCropType);
+                    }
                     break;
 
                 case ToolType.basket: 

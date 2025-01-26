@@ -66,6 +66,8 @@ public class GridController : MonoBehaviour
 
                     newBlock.currentStage = storedBlock.currentStage;
                     newBlock.isWatered = storedBlock.isWatered;
+                    newBlock.cropType = storedBlock.cropType;
+                    newBlock.growthFailChance = storedBlock.growthFailChance;
 
                     newBlock.SetSoilSprite();
                     newBlock.UpdateCropSprite();
