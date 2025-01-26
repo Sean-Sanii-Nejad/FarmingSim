@@ -97,10 +97,11 @@ public class GrowBlock : MonoBehaviour
         if(currentStage == GrowthStage.ploughed && isWatered && preventUse == false)
         {
             currentStage = GrowthStage.planted;
-
             cropType = cropToPlant;
-
             growthFailChance = CropController.instance.GetCropInfo(cropType).growthFailChance;
+
+            CropController.instance.UseSeed(cropToPlant);
+
             UpdateCropSprite();
         }
     }
