@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Mono.Cecil;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GridInfo : MonoBehaviour
 {

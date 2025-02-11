@@ -6,14 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 01bbedcabdf97e043b1a9400f8634df9
+  - enabled: 1
     path: Assets/Scenes/Indoors.unity
     guid: 4bc4ac2c63d95e249a97daa1c47af775
   - enabled: 1
     path: Assets/Scenes/Indoors-Copy.unity
     guid: b8cca2e66e9fae44fb7b613801a76666
-  - enabled: 1
-    path: Assets/Scenes/Main.unity
-    guid: 01bbedcabdf97e043b1a9400f8634df9
   - enabled: 1
     path: Assets/Scenes/NewDay.unity
     guid: accc2e832d6ab0f4081c0aee41e24498
